@@ -575,6 +575,42 @@ WHERE employees.department = departments.department
 AND employees.region_id = regions.region_id
 AND email IS NOT NULL
 
+SELECT salary, employees.department, division
+FROM employees, departments, regions
+WHERE employees.department = departments.department
+AND employees.region_id = regions.region_id
+AND email IS NOT NULL
+
+SELECT salary, employees.department, division, regions.country,employees.region_id
+FROM employees, departments, regions
+WHERE employees.department = departments.department
+AND employees.region_id = regions.region_id				 
+AND email IS NOT NULL							 
+							 
+SELECT salary, employees.department, division, regions.country,employees.region_id, departments.division
+FROM employees, departments, regions
+WHERE employees.department = departments.department
+AND employees.region_id = regions.region_id				 
+AND email IS NOT NULL							 
+							 
+Select salary, d.division
+From employees e, regions r, departments d
+Where e.department = d.department
+And e.region_id = r.region_id							 
+							 
+select email, gender							 
+From employees, departments, regions							 
+Where employees.department = departments.department							 
+And employees.region_id= regions.region_id							 
+And email is not null							 
+							
+SELECT first_name, email, employees.department, division, regions.country, gender,salary
+FROM employees, departments, regions
+WHERE employees.department = departments.department
+AND employees.region_id = regions.region_id
+AND email IS NOT NULL
+							 
+							 
 SELECT first_name, email, employees.department, division, country, gender,salary
 FROM employees, departments, regions
 WHERE employees.department = departments.department
@@ -594,35 +630,120 @@ FROM employees e, regions r
 WHERE e.region_id = r.region_id
 Group by country
 
+Select department, count (employee_id)							 
+FROM employees, regions							 
+Where employees.region_id = regions.region_id	
+Group by department						 
+					
+Select division, count (employee_id)							 
+FROM employees, regions, departments							 
+Where employees.region_id = regions.region_id
+And employees.department = departments.department							 
+Group by division								 
 
-SELECT country, count(employee_id)
+Select gender, count (employee_id)							 
+FROM employees, regions, departments							 
+Where employees.region_id = regions.region_id
+And employees.department = departments.department							 
+Group by gender								 
+							 
+Select employees.region_id, count (employee_id)							 
+FROM employees, regions, departments							 
+Where employees.region_id = regions.region_id
+And employees.department = departments.department							 
+Group by employees.region_id						 
+
+Select e.region_id, count (employee_id)							 
+FROM (select * from employees) e, (select * from regions) r , (select * from departments) d							 
+Where e.region_id = r.region_id
+And e.department = d.department							 
+And email is not null	
+Group by e.region_id						 
+						 
+
+SELECT r.country, count(employee_id)
 FROM (select * from employees) e, (select * from regions) r
 WHERE e.region_id = r.region_id
-Group by country
+And email is not null							 
+Group by r.country
 							 
 							 
 SELECT first_name, r.country
 FROM employees e
 INNER JOIN regions r ON e.region_id = r.region_id;		
-							 
+
+SELECT country
+FROM employees e
+INNER JOIN regions r ON e.region_id = r.region_id;		
+
+SELECT country,  e.region_id
+FROM employees e, regions r
+Where e.region_id = r.region_id;		
+					 
 
 SELECT first_name, email, d.division
 FROM employees e
 INNER JOIN departments d ON e.department = d.department
 WHERE email IS NOT NULL;				
 							 
-SELECT e.first_name, e.email, d.division, country
+SELECT Distinct(e.first_name), e.email, d.division, country
 FROM employees e
 INNER JOIN departments d ON e.department = d.department
 INNER JOIN regions r ON e.region_id = r.region_id
 WHERE email IS NOT NULL;
 							 
 
-SELECT e.first_name, e.email, d.division, country
+SELECT distinct(e.first_name), e.email, d.division, country
 FROM employees e
 Right JOIN departments d ON e.department = d.department
 INNER JOIN regions r ON e.region_id = r.region_id
 WHERE email IS NOT NULL;
+
+SELEct distinct(e.email), d.division, country
+FROM employees e
+Right JOIN departments d ON e.department = d.department
+INNER JOIN regions r ON e.region_id = r.region_id
+WHERE email IS NOT NULL;
+
+							 
+Select e.first_name, e.email, division, country, salary							 
+FROM employees e							 
+Left join departments d on e.department = d.department							 
+Inner join regions r on e.region_id = r.region_id							 
+Where salary between 100000 And 110000							 
+
+Select e.first_name, e.email, division, country, salary, hire_date, gender						 
+FROM employees e
+Left join departments d on e.department = d.department
+Inner join regions r on e.region_id = r.region_id							 
+Where salary between 100000 And 110000 OR e.hire_date between '2006-01-01' And '2008-12-31'
+							 
+Select e.first_name, e.email, division, country, salary, hire_date, gender						 
+FROM employees e
+Left join departments d on e.department = d.department
+Inner join regions r on e.region_id = r.region_id							 
+Where salary between 100000 And 110000 OR e.hire_date between '2006-01-01' And '2008-12-31'							 
+group by e.first_name, e.email, division, country, salary, hire_date, gender	 
+							 
+Select distinct(e.first_name), e.email, division, country, salary, hire_date, gender						 
+FROM employees e
+Left join departments d on e.department = d.department
+Inner join regions r on e.region_id = r.region_id							 
+Where salary between 100000 And 110000 OR e.hire_date between '2006-01-01' And '2008-12-31'	OR division='Entertainment'						 
+And email is not null
+group by distinct(e.first_name), e.email, division, country, salary, hire_date, gender
+							 
+Select distinct(e.first_name), e.email, division, country, salary, hire_date, gender						 
+FROM employees e
+Left join departments d on e.department = d.department
+inner join regions r on e.region_id = r.region_id							 
+Where salary between 100000 And 110000 OR e.hire_date between '2006-01-01' And '2008-12-31'	OR division in ('Fashion','Hardware')						 
+And email is not null
+group by distinct(e.first_name), e.email, division, country, salary, hire_date, gender							 
+							 
+							 
+							 
+							 
 							 
 SELECT e.first_name, e.email, division, country
 FROM employees e
@@ -642,6 +763,50 @@ Right JOIN departments d ON e.department = d.department
 Right JOIN regions r ON e.region_id = r.region_id
 WHERE email IS NULL;								 
 
+SELECT distinct first_name, email, division, country 
+FROM employees e
+Right JOIN departments d ON e.department = d.department
+Right JOIN regions r ON e.region_id = r.region_id
+WHERE email IS NULL;
+							 
+SELECT distinct first_name, email, division, country,salary 
+FROM employees e
+Right Join departments d On e.department = d.department
+Right Join regions r on e.region_id = r.region_id							 
+Where email is not null and salary>100000	order by salary	Limit 10	 
+
+SELECT distinct first_name, email, division, country,salary, gender
+FROM employees e
+Right Join departments d On e.department = d.department
+Right Join regions r on e.region_id = r.region_id							 
+Where email is not null and salary>100000	OR gender = 'f' order by salary	Limit 10	 
+
+							 
+SELECT distinct first_name, email, division, country,salary, gender
+FROM employees e
+Right Join departments d On e.department = d.department
+Right Join regions r on e.region_id = r.region_id							 
+Where email is not null OR salary>100000	And gender = 'f' order by salary	Limit 100							 
+							 
+SELECT distinct first_name, email, division, country,salary, gender
+FROM employees e
+Right Join departments d On e.department = d.department
+Right Join regions r on e.region_id = r.region_id							 
+Where email is not null And salary>100000	And gender = 'M' And division='Health' order by salary	Limit 100
+							 
+SELECT distinct first_name, email, division, country,salary, gender
+FROM employees e
+Right Join departments d On e.department = d.department
+Right Join regions r on e.region_id = r.region_id							 
+Where email is not null And salary>100000	And gender = 'M' And division='Health' And Country In ('Canada','United States')
+							 order by salary	Limit 100							 
+							 
+SELECT distinct first_name, email, division, country,salary, gender
+FROM employees e
+Right Join departments d On e.department = d.department
+Right Join regions r on e.region_id = r.region_id							 
+Where email is not null And salary>100000	And gender = 'F' And division='Health' And Country In ('Canada','United States')
+							 order by salary	Limit 100							 
 							 
 SELECT distinct first_name, email, division, country 
 FROM employees e
@@ -831,6 +996,139 @@ FROM employees b
 SELECT first_name, department,
 Count(*) Over(partition by (department))
 FROM employees b
+
+SELECT first_name, e.department, e.region_id,
+Count(*) Over(partition by (e.department,r.region_id))
+FROM employees e, departments d, regions r
+WHERE e.department = d.department
+AND e.region_id = r.region_id							 
+							 
+SELECT first_name, e.department, e.region_id,r.country,
+Count(*) Over(partition by (e.department,r.region_id))
+FROM employees e, departments d, regions r
+WHERE e.department = d.department
+AND e.region_id = r.region_id							 
+
+SELECT first_name, e.department, e.region_id,r.country,
+Count(*) Over(partition by (e.department,r.region_id))
+FROM employees e
+Inner join departments d on e.department = d.department
+Inner join  regions r on e.region_id = r.region_id							 
+							 
+SELECT first_name, e.department, e.region_id,r.country,
+Count(*) Over(partition by (e.department))
+FROM employees e
+Inner join departments d on e.department = d.department
+Inner join  regions r on e.region_id = r.region_id							 
+Group by first_name, e.department, e.region_id,r.country							 
+
+SELECT first_name, e.department, e.region_id,r.country,email,
+Count(*) Over(partition by (e.department))
+FROM employees e
+Inner join departments d on e.department = d.department
+Inner join  regions r on e.region_id = r.region_id							 
+Group by first_name, e.department, e.region_id,r.country, email							 
+							 
+SELECT first_name, e.department, e.region_id,r.country,email,salary,
+Count(*) Over(partition by (e.department))
+FROM employees e
+Inner join departments d on e.department = d.department
+Inner join  regions r on e.region_id = r.region_id
+Where salary between 100000 And 150000							 
+Group by first_name, e.department, e.region_id,r.country, email,salary	
+							 
+SELECT first_name, e.department, e.region_id,r.country,email,salary,
+Count(*) Over(partition by (e.department))
+FROM employees e
+Inner join departments d on e.department = d.department
+Inner join  regions r on e.region_id = r.region_id
+Where salary between 100000 And 150000							 
+Group by first_name, e.department, e.region_id,r.country, email,salary	 order by salary desc limit 5							 
+
+-- this will no work because partition by clause has no department clause
+SELECT first_name, department, 
+SUM(salary) over() FROM employees e						 
+Inner join departments d on e.department = d.department
+Inner join  regions r on e.region_id = r.region_id	
+Group by first_name,department							 
+							 
+-- this will no work because partition by clause has no department clause
+SELECT first_name, department, 
+Count(*) over() FROM employees e						 
+Inner join departments d on e.department = d.department
+Inner join  regions r on e.region_id = r.region_id	
+Group by first_name,department							 
+							 
+SELECT first_name, e.department, e.region_id,r.country,email,salary,e.employee_id,
+Count(*) Over(partition by e.department) dept_count,
+Count(*) Over(partition by e.employee_id) id_count
+FROM employees e
+Inner join departments d on e.department = d.department
+Inner join  regions r on e.region_id = r.region_id
+Where salary between 100000 And 150000							 
+Group by first_name, e.department, e.region_id,r.country, email,salary,e.employee_id	 order by salary desc limit 5							 
+							 
+SELECT first_name, e.department, e.region_id,r.country,email,salary,e.employee_id,
+Count(*) Over(partition by e.salary) dept_count,
+Count(*) Over(partition by e.region_id) id_count
+FROM employees e
+Inner join departments d on e.department = d.department
+Inner join  regions r on e.region_id = r.region_id
+Where salary between 100000 And 150000							 
+Group by first_name, e.department, e.region_id,r.country, email,salary,e.employee_id	 order by salary desc limit 5							 
+
+							 
+SELECT first_name, e.department, e.region_id,r.country,email,salary,e.employee_id,
+Count(*) Over(partition by e.first_name) dept_count,
+Count(*) Over(partition by e.salary) id_count
+FROM employees e
+Inner join departments d on e.department = d.department
+Inner join  regions r on e.region_id = r.region_id
+Where salary between 100000 And 150000							 
+Group by first_name, e.department, e.region_id,r.country, email,salary,e.employee_id	 order by salary desc limit 5							 
+
+SELECT first_name, e.department, e.region_id,r.country,d.division,email,salary,e.employee_id,
+Count(*) Over(partition by e.first_name) dept_count,
+Count(*) Over(partition by e.salary) id_count
+FROM employees e
+Inner join departments d on e.department = d.department
+Inner join  regions r on e.region_id = r.region_id
+Where salary between 100000 And 150000							 
+Group by first_name, e.department, e.region_id,r.country, d.division,email,salary,e.employee_id	 order by salary desc limit 5							 
+							 
+
+SELECT first_name, e.department, e.region_id,r.country,d.division,email,salary,e.employee_id,
+Count(*) Over(partition by e.first_name) dept_count,
+Count(*) Over(partition by d.division) div_count,							 
+Count(*) Over(partition by e.salary) id_count
+FROM employees e
+Inner join departments d on e.department = d.department
+Inner join  regions r on e.region_id = r.region_id
+Where salary between 100000 And 150000							 
+Group by first_name, e.department, e.region_id,r.country, d.division,email,salary,e.employee_id	 order by salary desc limit 5							 
+							 
+SELECT first_name, e.department, e.region_id,r.country,d.division,email,salary,e.employee_id,
+Count(*) Over(partition by e.first_name) dept_count,
+Count(*) Over(partition by d.division) div_count,
+Count(*) over(partition by r.country) country_count,							 
+Count(*) Over(partition by e.salary) id_count
+FROM employees e
+Inner join departments d on e.department = d.department
+Inner join  regions r on e.region_id = r.region_id
+Where salary between 100000 And 150000							 
+Group by first_name, e.department, e.region_id,r.country, d.division,email,salary,e.employee_id	 order by salary desc limit 5							 
+							 
+SELECT first_name, e.department, e.employee_id,
+Count(*) Over(partition by e.first_name) dept_count,
+Count(*) Over(partition by d.division) div_count,
+Count(*) over(partition by r.country) country_count,							 
+Count(*) Over(partition by e.salary) id_count,e.region_id,r.country,d.division,email,salary
+FROM employees e
+Inner join departments d on e.department = d.department
+Inner join  regions r on e.region_id = r.region_id
+Where salary between 100000 And 150000							 
+Group by first_name, e.department, e.region_id,r.country, d.division,email,salary,e.employee_id	 order by salary desc limit 5							 
+							 
 							 
 -- Except is like match function in excel							 
 (SELECT first_name, department,
@@ -1117,3 +1415,263 @@ GROUP BY RollUp(continent, country, city)
 SELECT continent, country, city, sum(units_sold)
 FROM sales Where units_sold>10000
 GROUP BY Cube(continent, country, city)								 
+							 
+
+SELECT department, first_name,salary, Case When salary = max_salary then 'highest'
+							 				When salary = min_salary then 'lowest' end as salary
+From(							 		
+SELECT department, first_name,salary,
+    
+    (SELECT max(salary) FROM employees b
+     WHERE a.department = b.department) as max_salary,
+     
+(SELECT min(salary) FROM employees b
+     WHERE a.department = b.department) as min_salary FROM employees a ) K where salary=max_salary or salary=min_salary order by 4
+
+
+SELECT department, 
+       first_name,
+       salary,
+       CASE WHEN salary = max_salary THEN 'highest'
+            WHEN salary = min_salary THEN 'lowest'
+       END AS salary_type
+FROM (
+    SELECT e.department, 
+           e.first_name, 
+           e.salary,
+           (SELECT MAX(salary) FROM employees b WHERE e.department = b.department) as max_salary,
+           (SELECT MIN(salary) FROM employees b WHERE e.department = b.department) as min_salary
+    FROM employees e
+) AS employee_details;
+						
+							 
+SELECT department, email,
+       first_name,
+       salary,
+       CASE WHEN salary = max_salary THEN 'highest'
+            WHEN salary = min_salary THEN 'lowest'
+       END AS salary_type
+FROM (
+    SELECT e.department,email,
+           e.first_name, 
+           e.salary,
+           (SELECT MAX(salary) FROM employees b WHERE e.department = b.department) as max_salary,
+           (SELECT MIN(salary) FROM employees b WHERE e.department = b.department) as min_salary
+    FROM employees e
+) AS employee_details where email is not null;	
+							 
+							 
+							 
+SELECT department, email,
+       distinct(first_name),
+       salary,
+       CASE WHEN salary = max_salary THEN 'highest'
+            WHEN salary = min_salary THEN 'lowest'
+       END AS salary_type
+FROM (
+    SELECT e.department,email,
+           distinct(e.first_name), 
+           e.salary,
+           (SELECT MAX(salary) FROM employees b WHERE e.department = b.department) as max_salary,
+           (SELECT MIN(salary) FROM employees b WHERE e.department = b.department) as min_salary
+    FROM employees e
+) AS employee_details where email is not null;
+							 
+						
+SELECT department,
+       email,
+       first_name,
+       salary,
+       CASE WHEN salary = max_salary THEN 'highest'
+            WHEN salary = min_salary THEN 'lowest'
+       END AS salary_type
+FROM (
+    SELECT department,
+           email,
+           first_name,
+           salary,
+           ROW_NUMBER() OVER (PARTITION BY department, first_name ORDER BY salary) AS row_num,
+           (SELECT MAX(salary) FROM employees b WHERE e.department = b.department) as max_salary,
+           (SELECT MIN(salary) FROM employees b WHERE e.department = b.department) as min_salary
+    FROM employees e
+) AS employee_details 
+WHERE row_num = 1 AND email IS NOT NULL;							 
+							 
+SELECT department,
+       email,
+       first_name,
+       salary,
+       CASE WHEN salary = max_salary THEN 'highest'
+            WHEN salary = min_salary THEN 'lowest'
+       END AS salary_type
+FROM (
+    SELECT department,
+           email,
+           first_name,
+           salary,
+           ROW_NUMBER() OVER (PARTITION BY department, first_name ORDER BY First_name) AS row_num,
+           (SELECT MAX(salary) FROM employees b WHERE e.department = b.department) as max_salary,
+           (SELECT MIN(salary) FROM employees b WHERE e.department = b.department) as min_salary
+    FROM employees e
+) AS employee_details 
+WHERE row_num = 1 AND salary IS NOT NULL And email is not null							 
+							 
+SELECT department,
+       email,
+       first_name,
+		gender,					 
+       salary,
+       CASE WHEN gender = 'M' And department = 'clothing' THEN 'highest' 
+            else 'lowest'
+       END AS salary_type
+							 From employees
+							 
+SELECT department,hire_date
+       email,
+       first_name,
+		gender,					 
+       salary,
+       CASE WHEN gender = 'M' And department = 'clothing' And hire_date between '2008-01-01' and '2010-01-01'THEN 'highest' 
+            else 'lowest'
+       END AS salary_type
+From employees	
+							 
+SELECT department,hire_date
+       email,department,
+       first_name,
+		gender,					 
+       salary,
+       CASE WHEN gender = 'M' And department = 'clothing' And department = 'sports' And hire_date between '2008-01-01' and '2010-01-01'THEN 'highest' 
+            else 'lowest'
+       END AS salary_type
+From employees								 
+							 
+SELECT department, email,salary,
+       CASE WHEN salary = max_salary THEN 'highest'
+            WHEN salary = min_salary THEN 'lowest'
+       END AS salary_type
+FROM (
+    SELECT e.department,email, 
+           e.salary,
+           (SELECT MAX(salary) FROM employees b WHERE e.department = b.department) as max_salary,
+           (SELECT MIN(salary) FROM employees b WHERE e.department = b.department) as min_salary
+    FROM employees e
+) AS employee_details where email is not null;
+							 
+							 
+(Select b.department,email,salary,							 
+(Select min(salary) from employees b where b.department=c.department) as max_salary),							 
+(select max(salary) from employees b where b.department = c.department) as min_salary
+From employees b) As details where email is not null		
+				
+				
+(select b.department, salary,				
+(select Max(salary) from employees c Where b.department = c. department) as max_Salary)
+From employees b) as details where email is not null
+					 
+(select b.department, salary,
+(Select min(salary) from employees c where b.department = c.department) as max_salary)
+from employees b) as details from email is not null
+
+
+--error is "" it should be apostrphe
+Select email, salary, Case When salary = min_salary then 'highest' end as salary_type
+From(
+Select email,salary,
+(select min(salary) from employees c where b.department = c.department) as min_salary from employees b) as tfg
+
+
+Select email, salary, Case When salary = min_salary then 'highest' 
+							When salary = max_salary then 'hissssss'end as salary_type
+From(
+Select email,salary,
+(select min(salary) from employees c where b.department = c.department) as min_salary,
+(select max(salary) from employees c where b.department = c.department)	as max_salary from employees b) as tfg
+Where email is not null and salary_type is not null
+
+
+SELECT 
+    
+    salary, 
+    CASE 
+        WHEN salary = min_salary THEN 'highest'
+        WHEN salary = max_salary THEN 'hissssss'
+    END AS salary_type
+FROM (
+    SELECT 
+        
+        salary,
+        (SELECT MIN(salary) FROM employees c WHERE b.department = c.department) AS min_salary,
+        (SELECT MAX(salary) FROM employees c WHERE b.department = c.department) AS max_salary
+    FROM 
+        employees b
+) AS tfg ;
+
+
+-- this query had error in column names and ( ) brackets!
+Select first_name,region_id,salary, case when salary = avg_salary then 'avg' end as your_avg
+from(
+Select first_name,region_id,salary,
+(Select Min(salary) from employees c Where b.department = c.department) as avg_salary From employees b) as tfg
+
+SELECT 
+    first_name,
+    region_id,
+    salary,
+    CASE 
+        WHEN salary = avg_salary THEN 'avg'
+    END AS your_avg
+FROM (
+    SELECT 
+        first_name,
+        region_id,
+        salary,
+        (SELECT Min(salary) FROM employees c WHERE b.department = c.department) AS avg_salary 
+    FROM 
+        employees b
+) AS tfg;
+
+
+Select salary, case when salary = Min_salary then 'minimum' end as min_salary
+From (
+select salary, ( select Avg(salary) from employees c where b.department = c.department ) as min_salary
+				From employees b) as tfg
+
+
+select salary, case when salary=max_salary then 'Max' end as max_salary
+From (select salary, (select max(salary) from employees b where b.department = c.department) as max_salary from employees c) as tfg
+
+
+Select salary, case when salary=minimum_salary then 'lowest' end as minimum_salary
+From (select salary, (select min(salary) from employees c where b.department=c.department) as minimum_salary
+	  from employees b) as tfg
+
+Select salary, case when salary=Minimum_salary then 'min_sal' end as Minimum_salary
+from (select salary, (select min(salary) from employees c where b.department = c.department) as Minimum_salary from employees b)
+as tfg
+
+Select salary, case when salary = Min_sal then 'lowest' end as Min_sal
+From (select salary, (select min(salary) from employees c where b.department = c.department) as Min_sal from employees b) as tff
+
+Select salary, case when salary=Max_salary then 'high' end as Max_salary
+From (select salary, (select max(salary) from employees c where b.department=c.department) as Max_salary from employees b) as tfg
+
+
+Select first_name,email,salary, case when salary = max_salary then 'highest' end as max_salary
+from (select first_name,email,salary, (select max(salary) from employees c where b.department = c.department) as max_salary
+from employees b where email is not null)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
